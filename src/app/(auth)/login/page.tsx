@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import Login from '@/template/login';
+import Login from '@/templates/login';
 
 export const metadata = {
   title: 'Login',

@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { ROUTES_DASHBOARD } from "@/enums/routes";
 import { LOCALSTORAGE_KEYS } from "@/enums/localstorage-keys";
+import axiosInstance from "@/libs/axios";
 
 const phoneSchema = z.object({
   phone: z
@@ -23,7 +24,7 @@ type PhoneForm = z.infer<typeof phoneSchema>;
 
 const Login = () => {
   const router = useRouter();
-  const [_, setToken] = useLocalStorage<string>(LOCALSTORAGE_KEYS.TOKEN, "");
+  const [_, setUserData] = useLocalStorage<ApiTypes.userData | "">(LOCALSTORAGE_KEYS.ME, "");
 
   const {
     register,
@@ -33,9 +34,15 @@ const Login = () => {
     resolver: zodResolver(phoneSchema),
   });
 
-  const onSubmit = (data: PhoneForm) => {
-    setToken(data.phone);
-    router.push(ROUTES_DASHBOARD.BASE);
+  const onSubmit = async (data: PhoneForm) => {
+    try {
+      const res = await axiosInstance.get<{ results: ApiTypes.userData[], info: ApiTypes.userResponseInfo }>("/api/?results=1&nat=us");
+      const userData = res.data.results[0];
+      setUserData(userData)
+      router.push(ROUTES_DASHBOARD.BASE);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -49,8 +56,6 @@ const Login = () => {
         <Input
           label="Phone Number"
           id="phone"
-          type="tel"
-          autoComplete="tel"
           {...register("phone")}
           error={errors.phone?.message}
           className={styles.input}

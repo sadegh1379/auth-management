@@ -1,0 +1,62 @@
+.button {
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+    user-select: none;
+  }
+  
+  .button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  
+  /* نوع‌ها */
+  .primary {
+    background-color: #0070f3;
+    color: white;
+  
+    &:hover:not(:disabled) {
+      background-color: #005bb5;
+    }
+  }
+  
+  .secondary {
+    background-color: #e2e8f0;
+    color: #1a202c;
+  
+    &:hover:not(:disabled) {
+      background-color: #cbd5e0;
+    }
+  }
+  
+  .danger {
+    background-color: #e53e3e;
+    color: white;
+  
+    &:hover:not(:disabled) {
+      background-color: #9b2c2c;
+    }
+  }
+  
+  /* سایزها */
+  .small {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+  }
+  
+  .medium {
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .large {
+    padding: 0.75rem 2rem;
+    font-size: 1.125rem;
+  }
+  

@@ -11,7 +11,6 @@ import { useLocalStorage } from "@/hooks/use-local-storage";
 import { ROUTES_DASHBOARD } from "@/enums/routes";
 import { LOCALSTORAGE_KEYS } from "@/enums/localstorage-keys";
 import axiosInstance from "@/libs/axios";
-import { useLayoutEffect } from "react";
 
 const phoneSchema = z.object({
   phone: z
@@ -25,7 +24,7 @@ type PhoneForm = z.infer<typeof phoneSchema>;
 
 const Login = () => {
   const router = useRouter();
-  const [userData, setUserData] = useLocalStorage<ApiTypes.userData | "">(
+  const [_, setUserData] = useLocalStorage<ApiTypes.userData | "">(
     LOCALSTORAGE_KEYS.ME,
     ""
   );
@@ -51,12 +50,6 @@ const Login = () => {
       console.log(error);
     }
   };
-
-  useLayoutEffect(() => {
-    if (userData && typeof userData === "object") {
-      router.replace(ROUTES_DASHBOARD.BASE);
-    }
-  }, [userData, router]);
 
   return (
     <div className={styles.loginContainer}>

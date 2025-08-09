@@ -1,5 +1,5 @@
 export const enum ROUTES_AUTH {
-    LOGIN = '/login'
+    BASE = '/login'
 }
 
 export const enum ROUTES_DASHBOARD {

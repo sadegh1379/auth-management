@@ -9,7 +9,7 @@ import styles from "./login.module.scss";
 import { useRouter } from "next/navigation";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { ROUTES_DASHBOARD } from "@/enums/routes";
-import { LOCAL_STORAGE_KEYS } from "@/enums/local-storage-keys";
+import { LOCALSTORAGE_KEYS } from "@/enums/localstorage-keys";
 
 const phoneSchema = z.object({
   phone: z
@@ -23,7 +23,7 @@ type PhoneForm = z.infer<typeof phoneSchema>;
 
 const Login = () => {
   const router = useRouter();
-  const [_, setToken] = useLocalStorage<string>(LOCAL_STORAGE_KEYS.TOKEN, "");
+  const [_, setToken] = useLocalStorage<string>(LOCALSTORAGE_KEYS.TOKEN, "");
 
   const {
     register,

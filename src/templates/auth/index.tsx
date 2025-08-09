@@ -5,12 +5,13 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/input";
 import Button from "@/components/button";
-import styles from "./login.module.scss";
+import styles from "./auth.module.scss";
 import { useRouter } from "next/navigation";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { ROUTES_DASHBOARD } from "@/enums/routes";
 import { LOCALSTORAGE_KEYS } from "@/enums/localstorage-keys";
 import axiosInstance from "@/libs/axios";
+import { useLayoutEffect } from "react";
 
 const phoneSchema = z.object({
   phone: z
@@ -24,7 +25,10 @@ type PhoneForm = z.infer<typeof phoneSchema>;
 
 const Login = () => {
   const router = useRouter();
-  const [_, setUserData] = useLocalStorage<ApiTypes.userData | "">(LOCALSTORAGE_KEYS.ME, "");
+  const [userData, setUserData] = useLocalStorage<ApiTypes.userData | "">(
+    LOCALSTORAGE_KEYS.ME,
+    ""
+  );
 
   const {
     register,
@@ -36,14 +40,23 @@ const Login = () => {
 
   const onSubmit = async (data: PhoneForm) => {
     try {
-      const res = await axiosInstance.get<{ results: ApiTypes.userData[], info: ApiTypes.userResponseInfo }>("/api/?results=1&nat=us");
+      const res = await axiosInstance.get<{
+        results: ApiTypes.userData[];
+        info: ApiTypes.userResponseInfo;
+      }>("/api/?results=1&nat=us");
       const userData = res.data.results[0];
-      setUserData(userData)
+      setUserData(userData);
       router.push(ROUTES_DASHBOARD.BASE);
     } catch (error) {
       console.log(error);
     }
   };
+
+  useLayoutEffect(() => {
+    if (userData && typeof userData === "object") {
+      router.replace(ROUTES_DASHBOARD.BASE);
+    }
+  }, [userData, router]);
 
   return (
     <div className={styles.loginContainer}>
